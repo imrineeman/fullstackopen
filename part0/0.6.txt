@@ -1,0 +1,9 @@
+note over browser:
+User clicks `save`
+browser executes the submit form event handler
+event handler creates and adds a new note, 
+rerender the note list, 
+and sends the note to the server as a POST request
+end note
+browser->server: HTTP POST https://studies.cs.helsinki.fi/exampleapp/new_note_spa
+server-->browser: (201) {"message":"note created"}
