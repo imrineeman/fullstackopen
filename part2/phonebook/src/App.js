@@ -3,13 +3,16 @@ import React, { useState } from 'react'
 const App = () => {
 
   const [persons, setPersons] = useState([
-    {
-      name: 'Arto Hellas',
-      number: '050000000'
-    }
+    { name: 'Arto Hellas', number: '040-123456' },
+    { name: 'Ada Lovelace', number: '39-44-5323523' },
+    { name: 'Dan Abramov', number: '12-43-234345' },
+    { name: 'Mary Poppendieck', number: '39-23-6423122' }
   ])
+
   const [newName, setNewName] = useState('')
   const [newNumber, setNewNumber] = useState('')
+  const [filter, setFilter] = useState('')
+
 
   const handleSubmit = (e) => {
     e.preventDefault()
@@ -34,7 +37,15 @@ const App = () => {
     setNewNumber(e.target.value)
   }
 
-  const displayNames = persons.map(
+  const handleFilterChange = e => {
+    setFilter(e.target.value)
+  }
+
+  const peopleToShow =
+    persons.filter(p => p.name.toLowerCase().includes(filter.toLowerCase()))
+
+
+  const displayNames = peopleToShow.map(
     n => <li key={n.name}
     >{n.name} , {n.number}</li>
   )
@@ -44,6 +55,13 @@ const App = () => {
     <div>
       <h2>Phonebook</h2>
       <form>
+        <div>
+          search:
+          <input
+            value={filter}
+            onChange={handleFilterChange}
+          />
+        </div>
         <div>
           name:
           <input
