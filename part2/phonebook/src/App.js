@@ -12,7 +12,7 @@ const App = () => {
     const nameObject = {
       name: newName,
     }
-    if (!persons.includes(nameObject)) {
+    if (persons.some(p => p['name'] === nameObject.name)) {
       window.alert(`${nameObject.name} is already included`)
     } else {
       setPersons(persons.concat(nameObject))
@@ -23,6 +23,7 @@ const App = () => {
 
   const handleChange = e => {
     setNewName(e.target.value)
+    console.log(newName);
   }
 
   const displayNames = persons.map(
