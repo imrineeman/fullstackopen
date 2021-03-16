@@ -4,8 +4,8 @@ import Part from './Part'
 
 const Content = ({ parts }) => {
 
-    const sumArr = parts.map((part) => part.exercises)
-    const sumEx = sumArr.reduce((a, b) => a + b, 0)
+    const sumEx =
+        parts.map(p => p.exercises).reduce((a, b) => a + b, 0)
 
     return (
         <div>
