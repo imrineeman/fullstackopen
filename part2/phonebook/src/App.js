@@ -12,7 +12,13 @@ const App = () => {
     const nameObject = {
       name: newName,
     }
-    setPersons(persons.concat(nameObject))
+    if (!persons.includes(nameObject)) {
+      window.alert(`${nameObject.name} is already included`)
+    } else {
+      setPersons(persons.concat(nameObject))
+
+    }
+
   }
 
   const handleChange = e => {
@@ -23,6 +29,7 @@ const App = () => {
     n => <li key={n.name}
     >{n.name}</li>
   )
+
 
   return (
     <div>
