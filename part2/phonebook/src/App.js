@@ -3,14 +3,19 @@ import React, { useState } from 'react'
 const App = () => {
 
   const [persons, setPersons] = useState([
-    { name: 'Arto Hellas' }
+    {
+      name: 'Arto Hellas',
+      number: '050000000'
+    }
   ])
   const [newName, setNewName] = useState('')
+  const [newNumber, setNewNumber] = useState('')
 
   const handleSubmit = (e) => {
     e.preventDefault()
     const nameObject = {
       name: newName,
+      number: newNumber,
     }
     if (persons.some(p => p['name'] === nameObject.name)) {
       window.alert(`${nameObject.name} is already included`)
@@ -21,14 +26,17 @@ const App = () => {
 
   }
 
-  const handleChange = e => {
+  const handleNameChange = e => {
     setNewName(e.target.value)
-    console.log(newName);
+  }
+
+  const handleNumberChange = e => {
+    setNewNumber(e.target.value)
   }
 
   const displayNames = persons.map(
     n => <li key={n.name}
-    >{n.name}</li>
+    >{n.name} , {n.number}</li>
   )
 
 
@@ -40,7 +48,14 @@ const App = () => {
           name:
           <input
             value={newName}
-            onChange={handleChange}
+            onChange={handleNameChange}
+          />
+        </div>
+        <div>
+          number:
+          <input
+            value={newNumber}
+            onChange={handleNumberChange}
           />
         </div>
         <div>
