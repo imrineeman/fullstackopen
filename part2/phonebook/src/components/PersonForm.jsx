@@ -1,4 +1,5 @@
 import React, { useState } from 'react'
+import personService from '../services/persons'
 
 
 const PersonForm = (props) => {
@@ -21,6 +22,7 @@ const PersonForm = (props) => {
         }
         e.preventDefault()
         props.parentCallback(newObj)
+        personService.create(newObj)
     }
 
     return (
