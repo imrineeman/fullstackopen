@@ -1,7 +1,7 @@
 import React, { useState } from 'react'
 import ListDisplay from './ListDisplay'
 
-const Filter = ({ people }) => {
+const Filter = ({ people, handleDelete }) => {
 
     const [filter, setFilter] = useState('')
 
@@ -20,7 +20,9 @@ const Filter = ({ people }) => {
                 onChange={handleFilterChange}
             />
             <ListDisplay
-                people={filterPeeps} />
+                people={filterPeeps}
+                handleDelete={handleDelete}
+            />
         </div>
     )
 

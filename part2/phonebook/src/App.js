@@ -13,8 +13,13 @@ const App = () => {
       window.alert(`${childData.name} is already included`)
     } else {
       setPersons(persons.concat(childData))
-
     }
+  }
+
+  const handleDelete = (deletedId) => {
+    setPersons(persons.filter(
+      p => p.id !== deletedId
+    ))
   }
 
   useEffect(() => {
@@ -33,6 +38,7 @@ const App = () => {
       <h2>Numbers</h2>
       <Filter
         people={persons}
+        handleDelete={handleDelete}
       />
     </div>
 
