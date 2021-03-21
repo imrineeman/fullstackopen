@@ -10,11 +10,23 @@ const App = () => {
 
   const handleFormSubmit = childData => {
     if (persons.some(p => p['name'] === childData.name)) {
-      window.alert(`${childData.name} is already included`)
+      if (window.confirm(`Replace ${childData.name}'s number?`)) {
+        replacePerson(childData)
+      }
     } else {
-      setPersons(persons.concat(childData))
+      personService.create(childData)
+        .then(setPersons(persons.concat(childData)))
     }
   }
+
+  const replacePerson = (dupe) => {
+    let newState = [...persons]
+    const dupePerson = persons.find(p => p['name'] === dupe.name)
+    dupePerson.number = dupe.number
+    personService.update(dupePerson.id, dupePerson)
+      .then(setPersons(newState))
+  }
+
 
   const handleDelete = (deletedId) => {
     setPersons(persons.filter(
