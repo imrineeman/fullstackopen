@@ -2,11 +2,14 @@ import React, { useState, useEffect } from 'react'
 import PersonForm from './components/PersonForm'
 import Filter from './components/Filter'
 import personService from './services/persons'
+import Notification from './components/Notification'
+
 
 
 const App = () => {
 
   const [persons, setPersons] = useState([])
+  const [successMessage, setSuccessMessage] = useState(null)
 
   const handleFormSubmit = childData => {
     if (persons.some(p => p['name'] === childData.name)) {
@@ -16,7 +19,16 @@ const App = () => {
     } else {
       personService.create(childData)
         .then(setPersons(persons.concat(childData)))
+        .then(showSuccessMsg('added', childData))
     }
+  }
+
+  const showSuccessMsg = (operation, data) => {
+    setSuccessMessage(`Successfuly ${operation} ${data.name}`)
+    setTimeout(() => {
+      setSuccessMessage(null)
+    }, 2000)
+
   }
 
   const replacePerson = (dupe) => {
@@ -25,6 +37,7 @@ const App = () => {
     dupePerson.number = dupe.number
     personService.update(dupePerson.id, dupePerson)
       .then(setPersons(newState))
+      .then(showSuccessMsg('updated', dupePerson))
   }
 
 
@@ -51,6 +64,9 @@ const App = () => {
       <Filter
         people={persons}
         handleDelete={handleDelete}
+      />
+      <Notification
+        message={successMessage}
       />
     </div>
 
