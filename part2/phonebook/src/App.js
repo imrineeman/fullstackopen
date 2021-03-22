@@ -19,12 +19,12 @@ const App = () => {
     } else {
       personService.create(childData)
         .then(setPersons(persons.concat(childData)))
-        .then(showSuccessMsg('added', childData))
+        .then(showSuccessMsg('Successfuly added', childData))
     }
   }
 
-  const showSuccessMsg = (operation, data) => {
-    setSuccessMessage(`Successfuly ${operation} ${data.name}`)
+  const showSuccessMsg = (msg, data) => {
+    setSuccessMessage(`${msg} ${data.name}`)
     setTimeout(() => {
       setSuccessMessage(null)
     }, 2000)
@@ -38,6 +38,11 @@ const App = () => {
     personService.update(dupePerson.id, dupePerson)
       .then(setPersons(newState))
       .then(showSuccessMsg('updated', dupePerson))
+      .catch(err => {
+        showSuccessMsg('Already deleted', dupePerson)
+        const newArr = persons.filter(n => n.name !== dupePerson.name)
+        setPersons(newArr)
+      })
   }
 
 
