@@ -34,6 +34,11 @@ let persons = [
 ]
 
 const baseUrl = '/api/persons'
+const findInstance = (resource, id) => {
+    const instance = resource.find(p => Number(p.id) === Number(id))
+    console.log(instance);
+    return instance
+}
 
 app.get('/info', (req, res) => {
     res.send(
@@ -47,9 +52,7 @@ app.get(baseUrl, (req, res) => {
 })
 
 app.get(baseUrl + '/:id', (req, res) => {
-    const id = Number(req.params.id)
-    const person = persons.find(p => id === p.id)
-
+    const person = findInstance(persons, req.params.id)
     if (person) {
         res.json(person)
     } else {
@@ -57,3 +60,8 @@ app.get(baseUrl + '/:id', (req, res) => {
     }
 })
 
+app.delete(baseUrl + '/:id', (req, res) => {
+    const id = Number(req.params.id)
+    persons = persons.filter(p => p.id !== id)
+    res.status(204).end()
+})
