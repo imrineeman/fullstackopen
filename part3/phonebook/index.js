@@ -7,7 +7,7 @@ const app = express()
 
 const PORT = 3001
 app.listen(PORT, () => {
-    console.log(`Running on ${PORT}`);
+    console.log(`Running on port ${PORT}`);
 })
 
 let persons = [
@@ -33,6 +33,8 @@ let persons = [
     }
 ]
 
+const baseUrl = '/api/persons'
+
 app.get('/info', (req, res) => {
     res.send(
         `<h3>phonebook has info for ${persons.length} people</h3>
@@ -40,7 +42,18 @@ app.get('/info', (req, res) => {
     )
 })
 
-app.get('/api/persons', (req, res) => {
+app.get(baseUrl, (req, res) => {
     res.json(persons)
+})
+
+app.get(baseUrl + '/:id', (req, res) => {
+    const id = Number(req.params.id)
+    const person = persons.find(p => id === p.id)
+
+    if (person) {
+        res.json(person)
+    } else {
+        res.status(404).end()
+    }
 })
 
