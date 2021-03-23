@@ -4,6 +4,7 @@ const { response } = require('express')
 const http = require('http')
 const express = require('express')
 const app = express()
+app.use(express.json())
 
 const PORT = 3001
 app.listen(PORT, () => {
@@ -34,10 +35,21 @@ let persons = [
 ]
 
 const baseUrl = '/api/persons'
+
 const findInstance = (resource, id) => {
     const instance = resource.find(p => Number(p.id) === Number(id))
     console.log(instance);
     return instance
+}
+
+const generateId = (arr) => {
+    const maxId = arr.length > 0
+        ? Math.max(...arr.map(n => n.id)) : 0
+    return maxId + 1
+}
+
+const randId = (min, max) => {
+    return (Math.random() * (max - min) + min)
 }
 
 app.get('/info', (req, res) => {
@@ -58,6 +70,13 @@ app.get(baseUrl + '/:id', (req, res) => {
     } else {
         res.status(404).end()
     }
+})
+
+app.post(baseUrl, (req, res) => {
+    const person = req.body
+    person.id = randId(5, 100)
+    console.log(person)
+    res.json(person)
 })
 
 app.delete(baseUrl + '/:id', (req, res) => {
