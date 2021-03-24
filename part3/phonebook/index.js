@@ -34,6 +34,10 @@ let persons = [
     }
 ]
 
+const person = {
+
+}
+
 const baseUrl = '/api/persons'
 
 const findInstance = (resource, id) => {
@@ -64,19 +68,34 @@ app.get(baseUrl, (req, res) => {
 })
 
 app.get(baseUrl + '/:id', (req, res) => {
-    const person = findInstance(persons, req.params.id)
-    if (person) {
-        res.json(person)
+    const personInstance = findInstance(persons, req.params.id)
+    if (personInstance) {
+        res.json(personInstance)
     } else {
         res.status(404).end()
     }
 })
 
 app.post(baseUrl, (req, res) => {
-    const person = req.body
-    person.id = randId(5, 100)
-    console.log(person)
-    res.json(person)
+    const personInstance = req.body
+    const dupePerson = persons.find(p => p.name === personInstance.name)
+    if (dupePerson) {
+        res.status(400).json({
+            error: 'Name should be unique'
+        })
+    } else if (personInstance.name === undefined) {
+        res.status(400).json({
+            error: 'Missing name field'
+        })
+    } else if (personInstance.number === undefined) {
+        res.status(400).json({
+            error: 'Missing number field'
+        })
+    } else {
+        personInstance.id = randId(5, 100)
+        persons = persons.concat(personInstance)
+        console.log(persons);
+    }
 })
 
 app.delete(baseUrl + '/:id', (req, res) => {
