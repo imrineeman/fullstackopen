@@ -11,8 +11,9 @@ const morgan = require('morgan')
 const cors = require('cors')
 app.use(cors())
 app.use(express.json())
+app.use(express.static('build'))
 
-const PORT = 3001
+const PORT = process.env.PORT || 3001
 app.listen(PORT, () => {
     console.log(`Running on port ${PORT}`);
 })
