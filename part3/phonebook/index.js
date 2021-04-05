@@ -7,6 +7,7 @@ const express = require('express')
 const morgan = require('morgan')
 const cors = require('cors')
 const Person = require('./models/persons')
+const persons = require('./models/persons')
 
 
 const app = express()
@@ -43,8 +44,8 @@ app.get(baseUrl, (req, res) => {
     Person.find({}).then(p => res.json(p))
 })
 
-app.get(baseUrl + '/:id', (req, res) => {
-    Person.findById(req.params.id).then(p => res.json(p))
+app.get(baseUrl + '/:id', (req, res, next) => {
+    Person.findById(req.params.id).then(p => res.json(p)).catch(err => next(err))
 })
 
 app.post(baseUrl, (req, res) => {
@@ -60,9 +61,21 @@ app.post(baseUrl, (req, res) => {
     }
 })
 
-app.delete(baseUrl + '/:id', (req, res) => {
-    const id = Number(req.params.id)
-    persons = persons.filter(p => p.id !== id)
-    res.status(204).end()
+app.delete(baseUrl + '/:id', (req, res, next) => {
+    Person.findByIdAndRemove(req.params.id)
+        .then(result => {
+            res.status(204).end
+        }).catch(err => next(err))
 })
+
+const errorHandler = (err, req, res, next) => {
+    console.log(err.message);
+    if (err.name === 'CastError') {
+        return res.status(400).send({ error: 'malformatted id' })
+    }
+
+    next(err)
+}
+app.use(errorHandler)
+
 
