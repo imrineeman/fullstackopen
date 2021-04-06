@@ -18,8 +18,15 @@ const App = () => {
       }
     } else {
       personService.create(childData)
-        .then(setPersons(persons.concat(childData)))
-        .then(showSuccessMsg('Successfuly added', childData))
+        .then(res => res.data)
+        .then(data => {
+          setPersons(persons.concat(data))
+          showSuccessMsg('Successfuly added', data)
+        })
+        .catch(err => {
+          showSuccessMsg('Validation error', err)
+          console.log(err.message)
+        })
     }
   }
 

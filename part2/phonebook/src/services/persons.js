@@ -1,6 +1,6 @@
 import axios from 'axios'
 
-const baseUrl = '/api/persons'
+const baseUrl = 'http://localhost:3001/api/persons'
 
 const get = () => {
     const req = axios.get(baseUrl)
@@ -8,8 +8,7 @@ const get = () => {
 }
 
 const create = newPerson => {
-    const req = axios.post(baseUrl, newPerson)
-    return req.then(res => res.data)
+    return axios.post(baseUrl, newPerson)
 }
 
 const remove = id => {

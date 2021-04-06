@@ -41,7 +41,6 @@ app.get('/info', (req, res) => {
             `<h3>phonebook has info for ${p.length} people</h3>
         <h4>${date = new Date()}</h4>`)
     })
-
 })
 
 app.get(baseUrl, (req, res) => {
@@ -52,7 +51,7 @@ app.get(baseUrl + '/:id', (req, res, next) => {
     Person.findById(req.params.id).then(p => res.json(p)).catch(err => next(err))
 })
 
-app.post(baseUrl, (req, res) => {
+app.post(baseUrl, (req, res, next) => {
     const instance = req.body
     if (instance === undefined) {
         return res.status(400).json({ error: 'content missing' })
@@ -61,7 +60,9 @@ app.post(baseUrl, (req, res) => {
             name: instance.name,
             number: instance.number
         })
-        person.save().then(savedPerson => res.json(savedPerson))
+        person.save()
+            .then(savedPerson => res.json(savedPerson))
+            .catch(err => next(err))
     }
 })
 
@@ -89,6 +90,8 @@ const errorHandler = (err, req, res, next) => {
     console.log(err.message);
     if (err.name === 'CastError') {
         return res.status(400).send({ error: 'malformatted id' })
+    } if (err.name === 'ValidationError') {
+        return res.status(400).send({ error: 'validation error' })
     }
 
     next(err)
