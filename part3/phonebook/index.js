@@ -8,6 +8,7 @@ const morgan = require('morgan')
 const cors = require('cors')
 const Person = require('./models/persons')
 const persons = require('./models/persons')
+const { update } = require('./models/persons')
 
 
 const app = express()
@@ -34,10 +35,13 @@ app.use(morgan(function (tokens, req, res) {
 const baseUrl = '/api/persons'
 
 app.get('/info', (req, res) => {
-    res.send(
-        `<h3>phonebook has info for ${persons.length} people</h3>
-        <h4>${date = new Date()}</h4>`
-    )
+    let length
+    Person.find({}).then(p => {
+        res.send(
+            `<h3>phonebook has info for ${p.length} people</h3>
+        <h4>${date = new Date()}</h4>`)
+    })
+
 })
 
 app.get(baseUrl, (req, res) => {
@@ -59,6 +63,19 @@ app.post(baseUrl, (req, res) => {
         })
         person.save().then(savedPerson => res.json(savedPerson))
     }
+})
+
+app.put(baseUrl + '/:id', (req, res, next) => {
+    const body = req.body
+    const person = {
+        name: body.name,
+        number: body.number
+    }
+
+    Person.findByIdAndUpdate(req.params.id, person, { new: true })
+        .then(updatedPerson => {
+            res.json(updatedPerson)
+        }).catch(err => next(err))
 })
 
 app.delete(baseUrl + '/:id', (req, res, next) => {
