@@ -19,6 +19,7 @@ mongoose.connect(url, {
         console.log('error connecting to mongoDB', err.message);
     })
 
+
 const personSchema = new mongoose.Schema({
     name: {
         type: String,
@@ -29,7 +30,8 @@ const personSchema = new mongoose.Schema({
     number: {
         type: String,
         minLength: 8,
-        required: true
+        required: true,
+        unique: true,
     },
 })
 
