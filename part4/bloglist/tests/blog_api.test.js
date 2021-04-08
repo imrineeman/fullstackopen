@@ -4,30 +4,13 @@ const supertest = require('supertest')
 const app = require('../app')
 const api = supertest(app)
 const Blog = require('../models/blog')
+const helper = require('./test_helper')
 
-const initialBlogs = [
-    {
-        _id: "5a422a851b54a676234d17f7",
-        title: "React patterns",
-        author: "Michael Chan",
-        url: "https://reactpatterns.com/",
-        likes: 7,
-        __v: 0
-    },
-    {
-        _id: "5a422aa71b54a676234d17f8",
-        title: "Go To Statement Considered Harmful",
-        author: "Edsger W. Dijkstra",
-        url: "http://www.u.arizona.edu/~rubinson/copyright_violations/Go_To_Considered_Harmful.html",
-        likes: 5,
-        __v: 0
-    }
-]
 
 beforeEach(async () => {
     console.log('started')
     await Blog.deleteMany({})
-    let blogs = initialBlogs.map(b => new Blog(b))
+    let blogs = helper.initialBlogs.map(b => new Blog(b))
     blogPromises = blogs.map(b => b.save())
     await Promise.all(blogPromises)
     console.log('saved');
@@ -44,10 +27,27 @@ describe('api tests', () => {
     })
 
     test('verify id', async () => {
-        let response = await api.get('/api/blogs')
+        let response = await helper.blogsInDb()
+        expect(response[0]['_id']).toBeDefined()
 
-        expect(response.body[0]['_id']).toBeDefined()
+    })
 
+    test('post blogpost', async () => {
+        exampleBlog = {
+            "__v": 0,
+            "_id": "606f34a15987574870f1e065",
+            "author": "Llo lili",
+            "likes": 7,
+            "title": "Tests",
+            "url": "https://reactpatterns.com/",
+        }
+        const initNum = await helper.blogsInDb()
+        await api
+            .post('/api/blogs')
+            .send(exampleBlog)
+            .expect(201)
+        const currentNum = await helper.blogsInDb()
+        expect(currentNum.length).toEqual(initNum.length + 1)
     })
 
 })
