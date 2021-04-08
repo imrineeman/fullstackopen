@@ -43,6 +43,13 @@ describe('api tests', () => {
 
     })
 
+    test('verify id', async () => {
+        let response = await api.get('/api/blogs')
+
+        expect(response.body[0]['_id']).toBeDefined()
+
+    })
+
 })
 
 afterAll(() => {
