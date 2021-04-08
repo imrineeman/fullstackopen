@@ -50,17 +50,26 @@ const blogs = [
     }
 ]
 
-test('dummy test', () => {
-    const res = helper.dummy(blogs)
+describe('dummy', () => {
+    test('dummy test', () => {
+        const res = helper.dummy(blogs)
 
-    expect(res).toBe(1)
+        expect(res).toBe(1)
+    })
 })
 
-describe('tests description', () => {
 
-    test('likes test', () => {
+describe('Total likes', () => {
+
+    test('Accumulate likes test', () => {
         const res = helper.totalLikes(blogs)
         expect(res).toBe(36)
     })
+})
 
+describe('Most liked', () => {
+    test('Most loved', () => {
+        const res = helper.mostLoved(blogs)
+        expect(res).toEqual(blogs[2])
+    })
 })
