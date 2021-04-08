@@ -11,7 +11,21 @@ const mostLoved = blogs => {
     return res
 }
 
+const mostBlogs = blogs => {
+    let authors = blogs.map(b => b.author)
+    res = authors.reduce((max, author) => {
+        newAut = blogs.filter(b => b.author === author)
+        currentAuth = blogs.filter(b => b.author === max)
+        return currentAuth.length > newAut.length ? max : author
+    })
+    obj = {
+        author: res,
+        blogs: blogs.filter(b => b.author === res).length
+    }
+    return obj
+}
+
 module.exports = {
-    dummy, totalLikes, mostLoved
+    dummy, totalLikes, mostLoved, mostBlogs
 }
 

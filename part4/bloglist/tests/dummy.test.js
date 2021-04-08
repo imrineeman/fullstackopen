@@ -73,3 +73,10 @@ describe('Most liked', () => {
         expect(res).toEqual(blogs[2])
     })
 })
+
+describe('Most blogs', () => {
+    test('Most blogs for author', () => {
+        res = helper.mostBlogs(blogs)
+        expect(res.author).toBe("Robert C. Martin")
+    })
+})
