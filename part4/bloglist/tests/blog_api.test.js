@@ -2,6 +2,7 @@ const { response } = require('express')
 const mongoose = require('mongoose')
 const supertest = require('supertest')
 const app = require('../app')
+const { deleteOne } = require('../models/blog')
 const api = supertest(app)
 const Blog = require('../models/blog')
 const helper = require('./test_helper')
@@ -54,6 +55,16 @@ describe('api tests', () => {
         const blogsArr = await helper.blogsInDb()
         const testBlog = blogsArr.filter(b => b.title === 'Tests')[0]
         expect(testBlog.likes).toBe(0)
+    })
+
+    test('verify title & url', async () => {
+        const badBlog = {
+            "author": "bad Blog!!!",
+        }
+        res = await api
+            .post('/api/blogs')
+            .send(badBlog)
+        expect(res.status).toBe(400)
     })
 
 })

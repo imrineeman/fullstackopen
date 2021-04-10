@@ -7,15 +7,21 @@ blogsRouter.get('/', async (request, response) => {
 })
 
 blogsRouter.post('/', async (request, response) => {
-
-    if (request.body.likes) {
+    const saveBlog = async () => {
         res = await new Blog(request.body).save()
         response.status(201).json(res)
+    }
+
+    if (!request.body.title || !request.body.url) {
+        response.status(400).end('Bad request')
+    }
+
+    if (request.body.likes) {
+        saveBlog()
 
     } else {
         request.body.likes = 0
-        res = await new Blog(request.body).save()
-        response.status(201).json(res)
+        saveBlog()
     }
 })
 
