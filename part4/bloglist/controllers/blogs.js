@@ -8,10 +8,15 @@ blogsRouter.get('/', async (request, response) => {
 
 blogsRouter.post('/', async (request, response) => {
 
-    await new Blog(request.body).save()
-        .then(result => {
-            response.status(201).json(result)
-        })
+    if (request.body.likes) {
+        res = await new Blog(request.body).save()
+        response.status(201).json(res)
+
+    } else {
+        request.body.likes = 0
+        res = await new Blog(request.body).save()
+        response.status(201).json(res)
+    }
 })
 
 module.exports = blogsRouter
