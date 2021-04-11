@@ -7,3 +7,15 @@ content-type: application/json
     "url" : "123",
     "likes" : 10
 }
+####
+PUT http://localhost:3003/api/blogs/5a422a851b54a676234d17f7
+content-type: application/json
+
+{
+"_id": "5a422a851b54a676234d17f7",
+"title": "React patterns",
+"author": "Michael Chan",
+"url": "https://reactpatterns.com/",
+"likes": 10,
+"__v": 0
+}
