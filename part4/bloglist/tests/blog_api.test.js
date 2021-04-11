@@ -53,7 +53,8 @@ describe('api tests', () => {
             .send(exampleBlog)
             .expect(201)
         const blogsArr = await helper.blogsInDb()
-        const testBlog = blogsArr.filter(b => b.title === 'Tests')[0]
+        const testBlog = blogsArr.filter(
+            b => b.title === 'Tests')[0]
         expect(testBlog.likes).toBe(0)
     })
 
@@ -65,6 +66,14 @@ describe('api tests', () => {
             .post('/api/blogs')
             .send(badBlog)
         expect(res.status).toBe(400)
+    })
+
+    test('verify deletion', async () => {
+        const initBlogs = await helper.blogsInDb()
+        await api.delete('/api/blogs/5a422aa71b54a676234d17f8')
+        const blogs = await helper.blogsInDb()
+        expect(blogs.find(blog => blog._id === '5a422aa71b54a676234d17f8')).toBeUndefined()
+        expect(blogs.length).toBe(initBlogs.length - 1)
     })
 
 })
