@@ -31,3 +31,18 @@ content-type: application/json
     "password":"12323"
 }
 ####
+POST http://localhost:3003/api/login 
+content-type: application/json
+
+{
+    "username":"hi",
+    "password":"123123"
+}
+#####
+POST http://localhost:3003/api/login 
+content-type: application/json
+
+{
+    "username":"bbbbbb",
+    "password":"12323"
+}
