@@ -6,6 +6,7 @@ const { deleteOne } = require('../models/blog')
 const api = supertest(app)
 const Blog = require('../models/blog')
 const helper = require('./test_helper')
+const User = require('../models/user')
 
 exampleBlog = {
     "__v": 0,
@@ -13,10 +14,13 @@ exampleBlog = {
     "author": "Llo lili",
     "title": "Tests",
     "url": "https://reactpatterns.com/",
+    "user": '6076a4a2efa2b31ca075b2ee'
 }
 
 beforeEach(async () => {
     await Blog.deleteMany({})
+    await User.deleteMany({})
+    await new User(helper.initialUsers[0]).save()
     let blogs = helper.initialBlogs.map(b => new Blog(b))
     blogPromises = blogs.map(b => b.save())
     await Promise.all(blogPromises)
@@ -32,7 +36,7 @@ describe('api tests', () => {
 
     test('verify id', async () => {
         let response = await helper.blogsInDb()
-        expect(response[0]['_id']).toBeDefined()
+        expect(response[0]['id']).toBeDefined()
     })
 
     test('post blogpost', async () => {

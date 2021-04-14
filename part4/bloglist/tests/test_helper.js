@@ -9,7 +9,8 @@ const initialBlogs = [
         author: "Michael Chan",
         url: "https://reactpatterns.com/",
         likes: 7,
-        __v: 0
+        user: '6076a4a2efa2b31ca075b2ee'
+
     },
     {
         _id: "5a422aa71b54a676234d17f8",
@@ -17,7 +18,17 @@ const initialBlogs = [
         author: "Edsger W. Dijkstra",
         url: "http://www.u.arizona.edu/~rubinson/copyright_violations/Go_To_Considered_Harmful.html",
         likes: 5,
-        __v: 0
+        user: '6076a4a2efa2b31ca075b2ee'
+    }
+]
+
+const initialUsers = [
+    {
+        "username": "Test Testy",
+        "password": "123456",
+        "name": "Lolo",
+        "_id": "6076a4a2efa2b31ca075b2ee",
+        "blogs": ['5a422a851b54a676234d17f7']
     }
 ]
 
@@ -34,5 +45,5 @@ const usersInDb = async () => {
 }
 
 module.exports = {
-    initialBlogs, blogsInDb, usersInDb
+    initialBlogs, blogsInDb, usersInDb, initialUsers
 }

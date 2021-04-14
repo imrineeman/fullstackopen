@@ -6,6 +6,7 @@ const User = require('../models/user')
 const api = supertest(app)
 const helper = require('./test_helper')
 
+
 describe('Blog tests api', () => {
     const invalidUsername = {
         "username": 'aa',

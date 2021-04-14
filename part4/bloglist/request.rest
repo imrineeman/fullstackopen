@@ -2,10 +2,11 @@ POST http://localhost:3003/api/blogs
 content-type: application/json
 
 {
-    "title" :"Ii",
+    "title" :"Hello tryout",
     "author" : "imri",
     "url" : "123",
-    "likes" : 10
+    "likes" : 10,
+    "userId": "6076a4a2efa2b31ca075b2ee"
 }
 ####
 PUT http://localhost:3003/api/blogs/5a422a851b54a676234d17f7

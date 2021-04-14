@@ -9,7 +9,6 @@ const userSchema = new mongoose.Schema({
         type: mongoose.Schema.Types.ObjectId,
         ref: 'Blog'
     }]
-
 })
 
 userSchema.set('toJSON', {
