@@ -9,6 +9,11 @@ blogsRouter.get('/', async (request, response) => {
     response.status(200).json(blogs)
 })
 
+blogsRouter.get('/:id', async (req, res) => {
+    const blog = await Blog.findById(req.params.id)
+    res.status(200).json(blog)
+})
+
 blogsRouter.post('/', async (request, response, next) => {
 
     const body = request.body
@@ -56,8 +61,21 @@ blogsRouter.post('/', async (request, response, next) => {
 })
 
 blogsRouter.delete('/:id', async (req, res) => {
-    await Blog.findByIdAndRemove(req.params.id)
-    res.status(204).end()
+    const token = req.token
+
+    const decodedToken = jwt.verify(token, process.env.SECRET)
+    console.log(decodedToken);
+
+    const blog = await Blog.findById(req.params.id)
+    const user = await User.findById(decodedToken.id)
+
+    if (blog.user.toString() === user.id.toString()) {
+        await Blog.findByIdAndRemove(req.params.id)
+        res.status(204).end()
+    } else (
+        res.status(401).json({ error: 'invalid permissions' })
+    )
+
 })
 
 blogsRouter.put('/:id', async (req, res) => {
