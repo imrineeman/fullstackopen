@@ -2,16 +2,37 @@ const blogsRouter = require('express').Router()
 const { response } = require('express')
 const Blog = require('../models/blog')
 const User = require('../models/user')
+const jwt = require('jsonwebtoken')
+
+const getTokenFrom = req => {
+    const auth = req.get('authorization')
+    if (auth && auth.toLowerCase().startsWith('bearer ')) {
+        return auth.substring(7)
+    }
+    return null
+
+}
 
 blogsRouter.get('/', async (request, response) => {
     const blogs = await Blog.find({})
     response.status(200).json(blogs)
 })
 
-blogsRouter.post('/', async (request, response) => {
+blogsRouter.post('/', async (request, response, next) => {
+
     const body = request.body
+    const token = getTokenFrom(request)
+    let decodedToken
+    try {
+        decodedToken = jwt.verify(token, process.env.SECRET)
+    }
+    catch (e) {
+        return next(e)
+    }
+
+    const user = await User.findById(decodedToken.id)
+
     const saveBlog = async () => {
-        let user = await User.findById(request.body.user)
         let newBlog = {
             title: body.title,
             author: body.author,
@@ -27,8 +48,6 @@ blogsRouter.post('/', async (request, response) => {
         }
         catch {
             e => {
-                console.log('Error!');
-
                 next(e)
             }
         }
