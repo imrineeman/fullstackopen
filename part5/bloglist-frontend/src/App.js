@@ -1,9 +1,11 @@
-import axios from 'axios'
-import React, { useState, useEffect } from 'react'
+import React, { useState, useEffect, useRef } from 'react'
 import Blog from './components/Blog'
-import blogService from './services/blogs'
 import loginService from './services/login'
 import userService from './services/users'
+import blogService from './services/blogs'
+
+import NoteForm from './components/NoteForm'
+import Togglable from './components/Togglable'
 
 const App = () => {
 
@@ -13,20 +15,31 @@ const App = () => {
   const [password, setPassword] = useState('')
   const [user, setUser] = useState(null)
 
-  const [blogTitle, setBlogTitle] = useState('')
-  const [blogAuthor, setBlogAuthor] = useState('')
-  const [blogUrl, setBlogUrl] = useState('')
+
+
+  const blogFormRef = useRef()
 
   const handleLogin = async () => {
     const userNew = {
       username: username,
       password: password
     }
-    const res = await loginService.login(userNew)
-    window.localStorage.setItem(
-      'loggedUser', JSON.stringify(res)
-    )
-    setUser(res)
+    try {
+      const res = await loginService.login(userNew)
+      window.localStorage.setItem(
+        'loggedUser', JSON.stringify(res)
+      )
+      setUser(res)
+    } catch (e) {
+      console.log(e.response);
+    }
+  }
+
+  const addBlog = async (newBlog) => {
+    blogFormRef.current.toggleVis()
+    blogService.setToken(user.token)
+    const res = await blogService.create(newBlog)
+    console.log(res);
   }
 
   const getUserBlogs = async () => {
@@ -38,17 +51,6 @@ const App = () => {
     window.localStorage.removeItem('loggedUser')
   }
 
-  const handleBlogSubmit = async () => {
-    const newBlog = {
-      "title": blogTitle,
-      "author": blogAuthor,
-      "url": blogUrl
-    }
-    blogService.setToken(user.token)
-    const res = await blogService.create(newBlog)
-    console.log(res);
-  }
-
   useEffect(() => {
     if (user !== null) {
       getUserBlogs()
@@ -57,7 +59,9 @@ const App = () => {
 
   useEffect(() => {
     const loggedOnJSON = window.localStorage.getItem('loggedUser')
-    if (loggedOnJSON) {
+    if (typeof loggedOnJSON === 'undefined') {
+
+    } else if (loggedOnJSON) {
       const user = JSON.parse(loggedOnJSON)
       setUser(user)
     }
@@ -83,17 +87,10 @@ const App = () => {
           {blogs.map(blog =>
             <Blog key={blog.id} blog={blog} />
           )}
-          <h2>Create new</h2>
-          <p>Title:</p><input
-            onChange={({ target }) => setBlogTitle(target.value)}
-          ></input>
-          <p>Author:</p><input
-            onChange={({ target }) => setBlogAuthor(target.value)}
-          ></input>
-          <p>URL:</p> <input
-            onChange={({ target }) => setBlogUrl(target.value)}
-          ></input>
-          <button onClick={handleBlogSubmit}>Submit</button>
+          <Togglable buttonLable={'Create Form'} ref={blogFormRef}>
+            <NoteForm user={user} handleBlogSubmit={addBlog} />
+          </Togglable>
+
         </div>}
     </div>
   )
