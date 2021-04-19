@@ -33,7 +33,7 @@ const App = () => {
       )
       setUser(res)
     } catch (e) {
-      console.log(e.response);
+      console.log(e.response)
     }
   }
 
@@ -41,7 +41,7 @@ const App = () => {
     blogFormRef.current.toggleVis()
     blogService.setToken(user.token)
     const res = await blogService.create(newBlog)
-    console.log(res);
+    console.log(res)
   }
 
   const getUserBlogs = async () => {
@@ -63,8 +63,9 @@ const App = () => {
   useEffect(() => {
     const loggedOnJSON = window.localStorage.getItem('loggedUser')
     if (typeof loggedOnJSON === 'undefined') {
-
-    } else if (loggedOnJSON) {
+      /* empty */
+    }
+    else if (loggedOnJSON) {
       const user = JSON.parse(loggedOnJSON)
       setUser(user)
     }

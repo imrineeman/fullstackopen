@@ -1,4 +1,3 @@
-import axios from 'axios'
 import React from 'react'
 import blogService from '../services/blogs'
 
@@ -18,7 +17,7 @@ const Blog = ({ blog }) => {
       {blog.title} {blog.author} {blog.likes}
       <button onClick={handleLike}>
         Like
-    </button>
+      </button>
     </div>
   )
 }
