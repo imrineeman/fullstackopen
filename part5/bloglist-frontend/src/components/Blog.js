@@ -13,8 +13,8 @@ const Blog = ({ blog }) => {
   }
 
   return (
-    <div>
-      {blog.title} {blog.author} {blog.likes}
+    <div className='info'>
+      {blog.title} {blog.author}
       <button onClick={handleLike}>
         Like
       </button>
