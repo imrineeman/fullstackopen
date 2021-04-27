@@ -108,10 +108,13 @@ const App = () => {
           <h2>Blogs</h2>
           <h3>User:{user.username}</h3>
           <button onClick={logoutHandler}>Logout</button>
-          {
-            newArr.map(blog =>
-              <Blog key={blog.id} blog={blog} user={user} handleDelete={handleDelete} />
-            )}
+          <ul
+            id='blogsArray'>
+            {
+              newArr.map(blog => <li>
+                <Blog key={blog.id} blog={blog} user={user} handleDelete={handleDelete} /></li>
+              )}
+          </ul>
           <Togglable buttonLable={'Create Form'} ref={blogFormRef}>
             <NoteForm user={user} handleBlogSubmit={addBlog} />
           </Togglable>
