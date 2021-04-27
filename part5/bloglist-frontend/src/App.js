@@ -46,7 +46,10 @@ const App = () => {
 
   const getUserBlogs = async () => {
     const userBlogs = await userService.getUser(user.userId)
-    setBlogs(userBlogs.blogs)
+    if (userBlogs === null) {
+
+    }
+    else { setBlogs(userBlogs.blogs) }
   }
 
   const logoutHandler = () => {
@@ -75,9 +78,11 @@ const App = () => {
   return (
     <div>
       <h1>Login</h1>
-      <div><input
-        text='Username'
-        onChange={({ target }) => setUsername(target.value)} />
+      <div
+        id='LoginForm'>
+        <input
+          text='Username'
+          onChange={({ target }) => setUsername(target.value)} />
       </div>
       <div><input
         text='Password'

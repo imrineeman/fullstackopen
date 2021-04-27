@@ -21,8 +21,6 @@ blogsRouter.post('/', userExtractor, async (request, response, next) => {
     const body = request.body
     const user = request.user
     console.log(user)
-
-
     const saveBlog = async () => {
         let newBlog = {
             title: body.title,
