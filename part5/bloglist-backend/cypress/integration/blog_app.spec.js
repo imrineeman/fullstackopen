@@ -10,6 +10,7 @@ describe('Note app', function () {
   cy.contains('Login')
   cy.get('#LoginForm')
  })
+
  describe('Login tests', function () {
   it('Login success', function () {
    cy.get('#username').type('imri')
@@ -25,4 +26,23 @@ describe('Note app', function () {
   })
  })
 
+ describe('when logged in', function () {
+  beforeEach(function () {
+   cy.request('POST', 'http://localhost:3005/api/login', {
+    username: 'imri', password: '123123'
+   }).then(res => {
+    localStorage.setItem('loggedUser', JSON.stringify(res.body))
+    cy.visit('http://localhost:3000')
+   })
+  })
+  it('create blog', function () {
+   cy.contains('Create Form').click()
+   cy.contains('Create new')
+   cy.get('#title').type('Cypress blog')
+   cy.get('#author').type('hoho')
+   cy.get('#url').type('lili')
+   cy.contains('Submit').click()
+   cy.contains('Cypress blog')
+  })
+ })
 })

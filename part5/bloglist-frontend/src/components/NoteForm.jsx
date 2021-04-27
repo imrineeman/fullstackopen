@@ -16,13 +16,13 @@ const NoteForm = ({ user, handleBlogSubmit }) => {
     return (
         <div>
             <h2>Create new</h2>
-            <p>Title:</p><input
+            <p>Title:</p><input id='title'
                 onChange={({ target }) => setBlogTitle(target.value)}
             ></input>
-            <p>Author:</p><input
+            <p>Author:</p><input id='author'
                 onChange={({ target }) => setBlogAuthor(target.value)}
             ></input>
-            <p>URL:</p> <input
+            <p>URL:</p> <input id='url'
                 onChange={({ target }) => setBlogUrl(target.value)}
             ></input>
             <button onClick={() => { handleBlogSubmit(newBlog) }}>Submit</button>

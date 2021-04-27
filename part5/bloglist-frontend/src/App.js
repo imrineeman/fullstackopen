@@ -16,6 +16,7 @@ const App = () => {
   const [user, setUser] = useState(null)
   const [mes, setMes] = useState('')
   const blogFormRef = useRef()
+  console.log(blogs);
 
   const newArr = blogs.sort((a, b) => {
     return b.likes - a.likes
@@ -45,7 +46,9 @@ const App = () => {
     blogFormRef.current.toggleVis()
     blogService.setToken(user.token)
     const res = await blogService.create(newBlog)
-    console.log(res)
+    let oldBlog = blogs
+    let newBlogs = oldBlog.concat(res)
+    setBlogs(newBlogs)
   }
 
   const getUserBlogs = async () => {
