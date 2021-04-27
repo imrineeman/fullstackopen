@@ -14,7 +14,7 @@ const App = () => {
   const [username, setUsername] = useState('')
   const [password, setPassword] = useState('')
   const [user, setUser] = useState(null)
-
+  const [mes, setMes] = useState('')
   const blogFormRef = useRef()
 
   const newArr = blogs.sort((a, b) => {
@@ -33,7 +33,11 @@ const App = () => {
       )
       setUser(res)
     } catch (e) {
-      console.log(e.response)
+      const err = e.response.data.error
+      setMes(err)
+      setTimeout(() => {
+        setMes('')
+      }, 3000)
     }
   }
 
@@ -81,14 +85,17 @@ const App = () => {
       <div
         id='LoginForm'>
         <input
+          id='username'
           text='Username'
           onChange={({ target }) => setUsername(target.value)} />
       </div>
       <div><input
+        id='password'
         text='Password'
         onChange={({ target }) => setPassword(target.value)}
       /></div>
-      <button onClick={handleLogin}>Login</button>
+      <button id='loginButton' onClick={handleLogin}>Login</button>
+      <span>{mes}</span>
       {user === null ?
         null : <div>
           <h2>Blogs</h2>
@@ -101,7 +108,6 @@ const App = () => {
           <Togglable buttonLable={'Create Form'} ref={blogFormRef}>
             <NoteForm user={user} handleBlogSubmit={addBlog} />
           </Togglable>
-
         </div>}
     </div>
   )
