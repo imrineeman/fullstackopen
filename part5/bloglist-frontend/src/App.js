@@ -16,7 +16,6 @@ const App = () => {
   const [user, setUser] = useState(null)
   const [mes, setMes] = useState('')
   const blogFormRef = useRef()
-  console.log(blogs);
 
   const newArr = blogs.sort((a, b) => {
     return b.likes - a.likes
@@ -63,6 +62,11 @@ const App = () => {
     window.localStorage.removeItem('loggedUser')
   }
 
+  const handleDelete = async deleteThis => {
+    blogService.setToken(user.token)
+    const res = await blogService.remove(deleteThis)
+    getUserBlogs()
+  }
 
   useEffect(() => {
     if (user !== null) {
@@ -106,7 +110,7 @@ const App = () => {
           <button onClick={logoutHandler}>Logout</button>
           {
             newArr.map(blog =>
-              <Blog key={blog.id} blog={blog} />
+              <Blog key={blog.id} blog={blog} user={user} handleDelete={handleDelete} />
             )}
           <Togglable buttonLable={'Create Form'} ref={blogFormRef}>
             <NoteForm user={user} handleBlogSubmit={addBlog} />

@@ -33,20 +33,26 @@ describe('Note app', function () {
    }).then(res => {
     localStorage.setItem('loggedUser', JSON.stringify(res.body))
     cy.visit('http://localhost:3000')
+    cy.contains('Create Form').click()
+    cy.contains('Create new')
+    cy.get('#title').type('Cypress blog')
+    cy.get('#author').type('hoho')
+    cy.get('#url').type('lili')
+    cy.contains('Submit').click()
    })
 
   })
   it('create blog', function () {
-   cy.contains('Create Form').click()
-   cy.contains('Create new')
-   cy.get('#title').type('Cypress blog')
-   cy.get('#author').type('hoho')
-   cy.get('#url').type('lili')
-   cy.contains('Submit').click()
    cy.contains('Cypress blog')
-
+  })
+  it('like blog', function () {
    cy.contains('Like').click()
    cy.contains('Unlike')
+  })
+  it('delete blog', function () {
+   cy.contains('Cypress blog').should('exist')
+   cy.contains('Delete').click()
+   cy.contains('Cypress blog').should('not.exist')
   })
  })
 })

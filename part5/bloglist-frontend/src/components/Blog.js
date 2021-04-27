@@ -2,7 +2,7 @@ import React, { useState, useEffect, useRef } from 'react'
 import blogService from '../services/blogs'
 
 
-const Blog = ({ blog }) => {
+const Blog = ({ blog, handleDelete }) => {
 
   const [liked, setLiked] = useState(false)
 
@@ -22,12 +22,14 @@ const Blog = ({ blog }) => {
     }
   }
 
-
   return (
     <div className='info'>
       {blog.title} {blog.author} {blog.likes}
       <button onClick={handleLike}>
         {liked === false ? 'Like' : 'Unlike'}
+      </button>
+      <button onClick={() => handleDelete(blog)}>
+        Delete
       </button>
     </div>
   )
