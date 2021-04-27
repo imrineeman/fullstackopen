@@ -34,6 +34,7 @@ describe('Note app', function () {
     localStorage.setItem('loggedUser', JSON.stringify(res.body))
     cy.visit('http://localhost:3000')
    })
+
   })
   it('create blog', function () {
    cy.contains('Create Form').click()
@@ -43,6 +44,9 @@ describe('Note app', function () {
    cy.get('#url').type('lili')
    cy.contains('Submit').click()
    cy.contains('Cypress blog')
+
+   cy.contains('Like').click()
+   cy.contains('Unlike')
   })
  })
 })
